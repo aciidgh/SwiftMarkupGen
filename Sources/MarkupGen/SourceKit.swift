@@ -1,13 +1,22 @@
+//===--- SourceKit.swift --------------------------------------------------===//
+//
+// Swift Markup Template Generator.
+//
+//===----------------------------------------------------------------------===//
+//
+//  This file has some parts from SourceKitten project.
+//  Contains methods to interact with SourceKit service.
+//
+//===----------------------------------------------------------------------===//
+
 import SourceKit
 import Foundation
-
-// This code is mostly from SourceKitten project.
 
 private var sourceKitInitializationToken: dispatch_once_t = 0
 
 func initalizeIfNeeded() {
     dispatch_once(&sourceKitInitializationToken) {
-        let _ = toolchainLoader.load("sourcekitd.framework/Versions/A/sourcekitd")
+        toolchainLoader.load("sourcekitd.framework/Versions/A/sourcekitd")
         sourcekitd_initialize()
     }
 }

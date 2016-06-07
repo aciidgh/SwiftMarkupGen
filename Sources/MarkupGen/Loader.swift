@@ -1,18 +1,15 @@
-import Foundation
+//===--- Loader.swift -----------------------------------------------------===//
+//
+// Swift Markup Template Generator.
+//
+//===----------------------------------------------------------------------===//
+//
+//  This file is taken from SourceKitten project.
+//  Utility to find and load SourceKit Framework.
+//
+//===----------------------------------------------------------------------===//
 
-struct DynamicLinkLibrary {
-    let path: String
-    let handle: UnsafeMutablePointer<Void>
-    
-    func loadSymbol<T>(symbol: String) -> T {
-        let sym = Darwin.dlsym(handle, symbol)
-        if sym == nil {
-            let errorString = String(cString: dlerror())
-            fatalError("Finding symbol \(symbol) failed: \(errorString)")
-        }
-        return unsafeBitCast(sym, to: T.self)
-    }
-}
+import Foundation
 
 let toolchainLoader = Loader(searchPaths: [
     xcodeDefaultToolchainOverride,
@@ -37,7 +34,7 @@ let toolchainLoader = Loader(searchPaths: [
 struct Loader {
     let searchPaths: [String]
 
-    func load(_ path: String) -> DynamicLinkLibrary {
+    func load(_ path: String) {
         let fullPaths = searchPaths.map { $0.stringByAppendingPathComponent(str: path) }.filter { $0.isFile }
 
         // try all fullPaths that contains target file,
@@ -45,7 +42,7 @@ struct Loader {
         for fullPath in fullPaths + [path] {
             let handle = dlopen(fullPath, RTLD_LAZY)
             if handle != nil {
-                return DynamicLinkLibrary(path: path, handle: handle!)
+                return
             }
         }
 

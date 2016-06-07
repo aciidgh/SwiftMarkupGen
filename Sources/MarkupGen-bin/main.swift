@@ -1,3 +1,13 @@
+//===--- main.swift -----------------------------------------------------===//
+//
+// Swift Markup Template Generator.
+//
+//===----------------------------------------------------------------------===//
+//
+//  Tool that takes string as an argument and returns markup template.
+//
+//===----------------------------------------------------------------------===//
+
 import MarkupGen
 
 import func libc.exit
@@ -25,9 +35,7 @@ var stderr = StandardErrorOutputStream()
 }
 
 do {
-    guard Process.arguments.count == 2 else {
-        usage()
-    }
+    guard Process.arguments.count == 2 else { usage() }
     let argument = Process.arguments[1]
     let gen = try generate(funcString: argument)
     print(gen, terminator: "")

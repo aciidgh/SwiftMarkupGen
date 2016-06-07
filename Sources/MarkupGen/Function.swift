@@ -1,3 +1,13 @@
+//===--- Function.swift ---------------------------------------------------===//
+//
+// Swift Markup Template Generator.
+//
+//===----------------------------------------------------------------------===//
+//
+//  Parses swift code into a Function object.
+//
+//===----------------------------------------------------------------------===//
+
 import Foundation
 
 enum Error: ErrorProtocol {
@@ -32,7 +42,7 @@ func parseFunction(funcString: String) throws -> Function {
     }
 
     var params = [String]()
-   
+    // See if there any params in this func. 
     if case let paramEntities as [SourceKitRepresentable] = firstEntity["key.entities"] {
         for case let param as [String: SourceKitRepresentable] in paramEntities {
             guard case let keyword as String = param["key.keyword"],
