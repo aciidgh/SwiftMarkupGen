@@ -6,6 +6,6 @@ let package = Package(
         Target(name: "MarkupGen-bin", dependencies: ["MarkupGen"]),
     ],
     dependencies: [
-        .Package(url: "../CSourceKit", majorVersion: 1),
+        .Package(url: "https://github.com/aciidb0mb3r/CSourceKit", majorVersion: 1),
     ]
 )
