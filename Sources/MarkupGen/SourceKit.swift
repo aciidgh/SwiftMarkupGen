@@ -10,6 +10,11 @@ func initalizeIfNeeded() {
     }
 }
 
+func printSourcekitJSON(data: [String: SourceKitRepresentable]) throws {
+    let outputData = try NSJSONSerialization.data(withJSONObject: toAnyObject(data) , options: .prettyPrinted)
+    print(NSString(data: outputData, encoding: NSUTF8StringEncoding))
+}
+
 func requestDocInfo(str: String) throws -> [String: SourceKitRepresentable] {
     initalizeIfNeeded()
     let req = "source.request.docinfo"

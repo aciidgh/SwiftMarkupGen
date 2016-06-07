@@ -7,5 +7,6 @@ let package = Package(
     ],
     dependencies: [
         .Package(url: "https://github.com/aciidb0mb3r/CSourceKit", majorVersion: 1),
+        .Package(url: "https://github.com/aciidb0mb3r/SwiftBasic", majorVersion: 1),
     ]
 )
