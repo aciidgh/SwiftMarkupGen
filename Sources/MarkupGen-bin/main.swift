@@ -31,7 +31,7 @@ do {
     let argument = Process.arguments[1]
     //let gen = try generate(funcString: "public func hello(cool a: Int, abc b: FooType) throws -> FooType {}")
     let gen = try generate(funcString: argument)
-    print(gen)
+    print(gen, terminator: "")
 } catch {
     print("Error: \(error)", to: &stderr)
     exit(1)
