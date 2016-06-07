@@ -43,12 +43,46 @@ func requestDocInfo(str: String) throws -> [String: SourceKitRepresentable] {
     return result
 }
 
-protocol SourceKitRepresentable {}
+protocol SourceKitRepresentable {
+    func isEqualTo(_ rhs: SourceKitRepresentable) -> Bool
+}
 extension Array: SourceKitRepresentable {}
 extension Dictionary: SourceKitRepresentable {}
 extension String: SourceKitRepresentable {}
 extension Int64: SourceKitRepresentable {}
 extension Bool: SourceKitRepresentable {}
+
+extension SourceKitRepresentable {
+    func isEqualTo(_ rhs: SourceKitRepresentable) -> Bool {
+        switch self {
+        case let lhs as [SourceKitRepresentable]:
+            for (idx, value) in lhs.enumerated() {
+                if let rhs = rhs as? [SourceKitRepresentable] where rhs[idx].isEqualTo(value) {
+                    continue
+                }
+                return false
+            }
+            return true
+        case let lhs as [String: SourceKitRepresentable]:
+            for (key, value) in lhs {
+                if let rhs = rhs as? [String: SourceKitRepresentable],
+                    rhsValue = rhs[key] where rhsValue.isEqualTo(value) {
+                    continue
+                }
+                return false
+            }
+            return true
+        case let lhs as String:
+            return lhs == rhs as? String
+        case let lhs as Int64:
+            return lhs == rhs as? Int64
+        case let lhs as Bool:
+            return lhs == rhs as? Bool
+        default:
+            fatalError("Should never happen because we've checked all SourceKitRepresentable types")
+        }
+    }
+}
 
 func fromSourceKit(_ sourcekitObject: sourcekitd_variant_t) -> SourceKitRepresentable? {
     switch sourcekitd_variant_get_type(sourcekitObject) {

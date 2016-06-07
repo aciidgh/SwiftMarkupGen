@@ -3,6 +3,7 @@ import Foundation
 enum Error: ErrorProtocol {
     case sourcekit(String)
     case sourcekitResultError(String)
+    case noFunctionDecl
 }
 
 struct Function {
@@ -15,14 +16,18 @@ struct Function {
 func parseFunction(funcString: String) throws -> Function {
     let result = try requestDocInfo(str: funcString)
 
-    // We only need the first entity.
-    guard case let entities as [SourceKitRepresentable] = result["key.entities"],
-          case let firstEntity as [String: SourceKitRepresentable] = entities.first else {
+    guard case let entities as [SourceKitRepresentable] = result["key.entities"] else {
         throw Error.sourcekitResultError("No entities")
     }
 
-    guard case let annotation as String = firstEntity["key.fully_annotated_decl"],
-          case let name as String = firstEntity["key.name"] else {
+    // Grab the first function decl.
+    let maybeFirstEntity = entities.flatMap{ $0 as? [String: SourceKitRepresentable] }
+            .filter{ (($0["key.kind"] as? String) ?? "").hasPrefix("source.lang.swift.decl.function") }.first
+    
+    // If we don't find any function decl, no need to proceed.
+    guard let firstEntity = maybeFirstEntity else { throw Error.noFunctionDecl }
+
+    guard case let name as String = firstEntity["key.name"] else {
         throw Error.sourcekitResultError("No name")
     }
 
@@ -36,8 +41,9 @@ func parseFunction(funcString: String) throws -> Function {
         }
     }
 
-    let returns = (annotation as NSString).contains("returntype")
-    let `throws` = (annotation as NSString).contains("throws")
+    // Just find if function returns and throws from the signature.
+    let returns = (funcString as NSString).contains("->")
+    let `throws` = (funcString as NSString).contains("throws")
 
     return Function(name: name, params: params, returns: returns, throws: `throws`)
 }
