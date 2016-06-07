@@ -1,7 +1,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "MarkupGen",
+    name: "SwiftMarkupGen",
     targets: [
         Target(name: "MarkupGen-bin", dependencies: ["MarkupGen"]),
     ],
