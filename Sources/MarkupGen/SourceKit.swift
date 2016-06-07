@@ -1,6 +1,8 @@
 import SourceKit
 import Foundation
 
+// This code is mostly from SourceKitten project.
+
 private var sourceKitInitializationToken: dispatch_once_t = 0
 
 func initalizeIfNeeded() {

@@ -5,11 +5,6 @@ enum Error: ErrorProtocol {
     case sourcekitResultError(String)
 }
 
-public func generate(funcString: String) throws -> String {
-    let function = try parseFunction(funcString: funcString)
-    return "\(function)"
-}
-
 struct Function {
     let name: String
     let params: [String]
