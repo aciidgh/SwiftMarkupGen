@@ -1,0 +1,7 @@
+language: objective-c
+osx_image: xcode7.3
+before_install:
+    - curl https://swift.org/builds/development/xcode/swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a/swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a-osx.pkg -o swift.pkg
+    - sudo installer -pkg swift.pkg -target /
+script:
+  - make && swift test
