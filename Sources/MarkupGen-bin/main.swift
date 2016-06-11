@@ -39,6 +39,8 @@ do {
     let argument = Process.arguments[1]
     let gen = try generate(funcString: argument)
     print(gen, terminator: "")
+} catch Error.noFunctionDecl {
+    print("///", terminator: "")
 } catch {
     print("Error: \(error)", to: &stderr)
     exit(1)

@@ -10,7 +10,7 @@
 
 import Foundation
 
-enum Error: ErrorProtocol {
+public enum Error: ErrorProtocol {
     case sourcekit(String)
     case sourcekitResultError(String)
     case noFunctionDecl
